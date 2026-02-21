@@ -1,146 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Studio</title>
-  <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/736x/0d/71/2a/0d712a0b6805c0b44386339048bdfce5.jpg?format=png&name=900x900">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Chat</title>
+
+  <link rel="stylesheet" href="./style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <!-- Background -->
-  <div class="bg">
-    <div class="bg__aurora"></div>
-    <div class="bg__grid"></div>
-    <div class="bg__grain"></div>
-  </div>
-
   <div class="app">
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="brand">
-        <div class="brand__logo" aria-hidden="true">
-          <div class="brand__logo-inner"></div>
-        </div>
-        <div class="brand__meta">
-          <div class="brand__name">AI Studio</div>
-          <div class="brand__sub">Frontend for Gemini API</div>
-        </div>
+      <div class="sidebar-top">
+        <button class="btn btn-primary" id="newChatBtn">+ New chat</button>
       </div>
 
-      <div class="sidebar__card">
-        <div class="sidebar__title">Quick Prompts</div>
-        <div class="chips" id="chips">
-          <button type="button" class="chip" data-prompt="Buat ringkasan singkat dari teks ini.">Ringkas</button>
-          <button type="button" class="chip" data-prompt="Buatkan ide konten sosial media bertema AI.">Ide Konten</button>
-          <button type="button" class="chip" data-prompt="Bantu debugging kode ini dan jelaskan penyebabnya.">Debug</button>
-          <button type="button" class="chip" data-prompt="Tulis email profesional, sopan, dan jelas.">Email</button>
-        </div>
-
-        <div class="sidebar__hint">
-          <div class="dot"></div>
-          <div>
-            <div class="hint__title">Supports</div>
-            <div class="hint__text">Image · Video · Audio · PDF</div>
-          </div>
-        </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Chats</div>
+        <div class="chat-list" id="chatList"></div>
       </div>
 
-      <div class="sidebar__footer">
-        <div class="badge">Production UI</div>
-        <div class="muted">Powered by Kelvdra</div>
+      <div class="sidebar-bottom">
+        <div class="small muted">AI Chat UI · Gemini backend</div>
       </div>
     </aside>
 
-    <!-- Main -->
+    <!-- MAIN -->
     <main class="main">
-      <!-- Topbar -->
       <header class="topbar">
-        <div class="topbar__left">
-          <div class="status">
-            <span class="status__dot" id="statusDot"></span>
-            <span class="status__text" id="statusText">Ready</span>
+        <div class="brand">
+          <div class="brand-dot"></div>
+          <div>
+            <div class="brand-title">AI Chat</div>
+            <div class="brand-sub muted" id="statusText">Ready</div>
           </div>
         </div>
 
-        <div class="topbar__right">
-          <button class="icon-btn" id="toggleTheme" type="button" title="Toggle theme">
-            <span class="icon" aria-hidden="true">✦</span>
-          </button>
-          <button class="icon-btn" id="clearChat" type="button" title="Clear chat">
-            <span class="icon" aria-hidden="true">🗑</span>
-          </button>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="clearBtn" title="Clear current chat">🗑</button>
         </div>
       </header>
 
-      <!-- Chat -->
-      <section class="chat" id="chat" aria-live="polite">
-        <div class="welcome">
-          <div class="welcome__badge">Welcome</div>
-          <h1 class="welcome__title">Halo 👋</h1>
-          <p class="welcome__desc">
-            Mulai percakapan dengan AI. UI ini dibuat dengan gaya “luxe” yang clean dan modern.
-          </p>
-          <div class="welcome__grid">
-            <div class="mini">
-              <div class="mini__title">Copiable Code</div>
-              <div class="mini__text">Auto format code block + tombol salin</div>
-            </div>
-            <div class="mini">
-              <div class="mini__title">Highlight</div>
-              <div class="mini__text">Teks di dalam <code>`backtick`</code> jadi highlight</div>
-            </div>
-            <div class="mini">
-              <div class="mini__title">Uploads</div>
-              <div class="mini__text">Preview file sebelum dikirim</div>
-            </div>
+      <section class="content" id="chat">
+        <div class="hero" id="hero">
+          <div class="hero-title">Halo 👋</div>
+          <div class="hero-desc muted">
+            Ini UI ChatGPT-style: ada sidebar history, new chat, composer bawah, dan bubble rapi.
+          </div>
+          <div class="hero-tips">
+            <div class="tip">Enter untuk kirim</div>
+            <div class="tip">Shift+Enter untuk baris baru</div>
+            <div class="tip">Support file (image/video/audio/pdf)</div>
           </div>
         </div>
       </section>
 
-      <!-- Composer -->
       <section class="composer">
-        <div class="file-preview hidden" id="filePreview">
-          <div class="file-preview__inner">
-            <div class="file-preview__left" id="previewContent"></div>
-            <button class="icon-btn danger" id="removeFile" type="button" title="Remove file">✕</button>
-          </div>
+        <div class="file-row hidden" id="fileRow">
+          <div class="file-pill" id="filePill"></div>
+          <button class="icon-btn danger" id="removeFileBtn" title="Remove file">✕</button>
         </div>
 
         <form id="form" class="compose">
-          <input type="file" id="fileUpload" name="file" accept="image/*,video/mp4,audio/*,application/pdf" hidden>
+          <input type="file" id="fileInput" name="file" accept="image/*,video/mp4,audio/*,application/pdf" hidden />
+          <button class="icon-btn" type="button" id="attachBtn" title="Attach file">📎</button>
 
-          <button type="button" class="compose__btn" id="attachBtn" title="Attach file">
-            📎
-          </button>
+          <textarea
+            id="text"
+            name="text"
+            rows="1"
+            placeholder="Ketik pesan..."
+            autocomplete="off"
+          ></textarea>
 
-          <div class="compose__field">
-            <textarea
-              id="text"
-              name="text"
-              rows="1"
-              placeholder="Tulis pesan... (Enter kirim, Shift+Enter baris baru)"
-              autocomplete="off"
-            ></textarea>
-            <div class="compose__hint">
-              <span class="kbd">Enter</span> kirim · <span class="kbd">Shift</span>+<span class="kbd">Enter</span> baris baru
-            </div>
-          </div>
-
-          <button type="submit" class="compose__send" id="sendBtn">
-            <span class="send__icon">➤</span>
-            <span class="send__text">Send</span>
-          </button>
+          <button class="btn btn-send" type="submit" id="sendBtn">Send</button>
         </form>
+
+        <div class="composer-hint muted">
+          AI bisa menampilkan code block dengan tombol copy.
+        </div>
       </section>
     </main>
   </div>
 
-  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast hidden" id="toast"></div>
 
-  <script src="./app.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
